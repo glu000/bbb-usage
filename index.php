@@ -12,9 +12,12 @@ putenv ("BBB_SERVER_BASE_URL=https://bbb.gl.co.at/bigbluebutton/");
 $bbb = new BigBlueButton();
 $response = $bbb->getMeetings();
 
+$i=0;
 if ($response->getReturnCode() == 'SUCCESS') {
     foreach ($response->getRawXml()->meetings->meeting as $meeting) {
         // process all meeting
-        $x=1;
+        $i++;
     }
 }
+
+echo "Anzahl Meetings: " . $i;
