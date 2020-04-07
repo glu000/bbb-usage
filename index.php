@@ -20,4 +20,4 @@ if ($response->getReturnCode() == 'SUCCESS') {
     }
 }
 
-echo "Anzahl Meetings: " . $i;
+echo "Anzahl Meetings: " . $i . "\n";
