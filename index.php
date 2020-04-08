@@ -28,6 +28,6 @@ if ($response->getReturnCode() == 'SUCCESS') {
     }
 }
 
-$content = date('Ymd_hi') . ": Anzahl Meetings: " . $i . "\n";
+$content = date('Ymd_Hi') . ": Anzahl Meetings: " . $i . "\n";
 
 file_put_contents("/var/log/bbb-usage-meetings.txt", $content, FILE_APPEND);
