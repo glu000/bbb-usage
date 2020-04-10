@@ -6,8 +6,8 @@ require_once 'conf.php';
 
 use BigBlueButton\BigBlueButton;
 
-putenv ("BBB_SECRET=98b204dc3310d8df98e1bfe986fd61bc");
-putenv ("BBB_SERVER_BASE_URL=https://bbb.gl.co.at/bigbluebutton/");
+putenv ("BBB_SECRET=$bbb_secret");
+putenv ("BBB_SERVER_BASE_URL=$servername/bigbluebutton/");
 
 date_default_timezone_set($timezone);
 

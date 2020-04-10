@@ -1,0 +1,19 @@
+<html>
+<head>
+    <script type="text/javascript">
+
+        if(window.innerHeight > window.innerWidth){
+            var landscapeOrPortrait = 'portrait';
+        } else {
+            var landscapeOrPortrait = 'landscape';
+        }
+
+        var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
+        var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+
+
+        window.location.replace('mainpage.php?width='+width+'&height='+height+'&landscapeOrPortrait='+landscapeOrPortrait);
+    </script>
+</head>
