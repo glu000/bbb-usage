@@ -71,4 +71,4 @@ $output .= "\n";
 
 print $output;
 
-file_put_contents($filename, $content, FILE_APPEND);
+file_put_contents($filename, $output, FILE_APPEND);
