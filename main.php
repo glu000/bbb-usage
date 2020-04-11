@@ -10,6 +10,10 @@ $width = $_GET ['width'];
 
 $xdata = array ();
 
+if (!file_exists('tmp')) {
+    mkdir('tmp', 0777, true);
+}
+
 $file = fopen ($filename, 'r');
 
 $row = 0;
