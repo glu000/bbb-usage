@@ -27,7 +27,7 @@ if (($handle = fopen($filename, "r")) !== FALSE) {
 
         //$num = count($data);  // TODO: Check if data row is correct, i.e. $num and $nr_server fit
 
-        $xdata [$row] = $data [0] . " " . $data [1];
+        $xdata [$row] = strtotime( $data[0] . " " . $data [1]);
 
         $nr_server = $data [2];
 
@@ -103,11 +103,13 @@ foreach ($server_arr as $srvname) {
 
     $graph->xgrid->Show();
     $graph->xgrid->SetLineStyle("solid");
-    $graph->xaxis->SetTickLabels($xdata);
+    //$graph->xaxis->SetTickLabels($xdata);
     $graph->xgrid->SetColor('#E3E3E3');
 
+    $graph->xaxis->SetLabelAngle(90);
+
     // Create the first line
-    $p1 = new LinePlot($nr_meetings[$srvname]);
+    $p1 = new LinePlot($nr_meetings[$srvname], $xdata);
     $graph->Add($p1);
     $p1->SetColor("#6495ED");
     $p1->SetLegend("Number of active Rooms");
