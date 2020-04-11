@@ -10,7 +10,7 @@ $width = $_GET ['width'];
 
 $xdata = array ();
 
-if (!file_exists('tmp')) {
+if (!file_exists('tmp')) {  // TODO: This does not work
     mkdir('tmp', 0777, true);
 }
 
@@ -83,7 +83,7 @@ foreach ($server_arr as $srvname) {
 
     // Setup the graph
     $graph = new Graph($width, 300);
-    $graph->SetScale("textlin");
+    $graph->SetScale( 'datlin' );
 
     $theme_class = new UniversalTheme;
 
