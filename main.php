@@ -4,6 +4,7 @@ require_once 'conf.php';
 
 require_once ('jpgraph/jpgraph.php');
 require_once ('jpgraph/jpgraph_line.php');
+require_once ('jpgraph/jpgraph_date.php');
 
 
 $width = $_GET ['width'];
