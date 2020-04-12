@@ -110,6 +110,8 @@ foreach ($ydata as $key => $stat) {
     //$graph->xaxis->SetTickLabels($xdata);
     $graph->xgrid->SetColor('#E3E3E3');
 
+;
+
     $graph->xaxis->SetLabelAngle(90);
 
     // Create the first line
@@ -125,6 +127,7 @@ foreach ($ydata as $key => $stat) {
     }
 
     $graph->legend->SetFrameWeight(1);
+    //$graph->legend->SetPos(0.5,0.5,'left','left');
 
     // Output line
     $imgname = "tmp/imagefile_$key.png";
@@ -148,7 +151,7 @@ print "<h2>Usage statistics for $servername</h2>";
 
 $currdata = getCurrentData();
 
-if (empty ($currdata))
+if (!empty ($currdata))
 {
     print '<br><table id="currdata">';
 
