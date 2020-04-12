@@ -3,49 +3,11 @@
 require_once './vendor/autoload.php';
 
 require_once 'conf.php';
-
-use BigBlueButton\BigBlueButton;
-
-putenv ("BBB_SECRET=$bbb_secret");
-putenv ("BBB_SERVER_BASE_URL=$servername/bigbluebutton/");
+require_once 'lib.php';
 
 date_default_timezone_set($timezone);
 
-$data = array ();
-
-$bbb = new BigBlueButton();
-
-$response = $bbb->getMeetings();
-
-
-if ($response->getReturnCode() == 'SUCCESS') {
-    $content = $response->getRawXml();
-    foreach ($content->meetings->meeting as $meeting) {
-        // process all meetings and save usage data to array (by server)
-
-        $server = (string)$meeting->metadata->{'bbb-origin-server-name'};
-
-        if (!array_key_exists($server, $data))
-        {
-            // new server - init stats (to avoid php warning undefined index)
-            $data [$server]['meetingCount'] = 0;
-            $data [$server]['participantCount'] = 0;
-            $data [$server]['voiceParticipantCount'] = 0;
-            $data [$server]['videoCount'] = 0;
-            $data [$server]['breakoutCount'] = 0;
-        }
-
-        $data [$server]['meetingCount'] += 1;
-        $data [$server]['participantCount'] += $meeting->participantCount;
-        $data [$server]['voiceParticipantCount'] += $meeting->voiceParticipantCount;
-        $data [$server]['videoCount'] += $meeting->videoCount;
-        if ((string)$meeting->isBreakout == "true")
-        {
-            $data [$server]['breakoutCount'] += 1;
-        }
-        $x=1;
-    }
-}
+$data = getCurrentData();
 
 $day = date('Y-m-d');
 $time = date('H:i');

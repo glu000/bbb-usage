@@ -1,6 +1,7 @@
 <?php
 
 require_once 'conf.php';
+require_once 'lib.php';
 
 require_once ('jpgraph/jpgraph.php');
 require_once ('jpgraph/jpgraph_line.php');
@@ -136,11 +137,48 @@ foreach ($ydata as $key => $stat) {
 
 }
 
+$currdata = getCurrentData();
 
-print "<html><body>";
+print '<html><head>';
+print '<link rel="stylesheet" type="text/css" href="main.css">';
+print '</head>';
+
+print "<body>";
 
 
 print "<h2>Usage statistics for $servername</h2>";
+
+$currdata = getCurrentData();
+
+
+print '<br><table id="currdata">';
+
+print "<tr>";
+print "<th></th>";
+
+foreach ($title as $text)
+{
+    print "<th>$text</th>";
+}
+print "</tr>";
+
+foreach ($currdata as $key => $stat) {
+
+    print "<tr>";
+    print "<td>";
+    print $key;
+    print "</td>";
+
+    foreach ($stat as $value)
+    {
+        print "<td>";
+        print $value;
+        print "</td>";
+    }
+    print "</tr>";
+}
+
+print "</table><br><br>";
 
 
 foreach ($ydata as $key => $stat) {
