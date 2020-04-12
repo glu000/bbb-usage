@@ -6,6 +6,13 @@ require_once ('jpgraph/jpgraph.php');
 require_once ('jpgraph/jpgraph_line.php');
 require_once ('jpgraph/jpgraph_date.php');
 
+$color = array ("#6495ED", "#B22222", "#FF1493");
+
+$title = array ('meetingCount' => "Number of active Rooms",
+    'participantCount' => "Number of participants",
+    'voiceParticipantCount' => "Number of voice connections",
+    'videoCount' => "Number of video connections",
+    'breakoutCount' => "Number of Breakout-Rooms");
 
 $width = $_GET ['width'];
 
@@ -40,7 +47,11 @@ if (($handle = fopen($filename, "r")) !== FALSE) {
             $srvname = $data [$serveridx];
             if (!in_array($srvname, $server_arr)) $server_arr [] = $srvname;
 
-            $nr_meetings [$srvname][$row] = (int)$data[4];
+            $ydata['meetingCount'][$srvname][$row] = (int)$data[4];
+            $ydata['participantCount'][$srvname][$row] = (int)$data[5];
+            $ydata['voiceParticipantCount'][$srvname][$row] = (int)$data[6];
+            $ydata['videoCount'][$srvname][$row] = (int)$data[7];
+            $ydata['breakoutCount'][$srvname][$row] = (int)$data[8];
 
             $serveridx += 6;
         }
@@ -59,28 +70,22 @@ else
 // fill empty values
 for ($i=0; $i<$row; $i++)
 {
-    foreach ($server_arr as $srvname)
-    {
-        if (!array_key_exists($srvname, $nr_meetings))
-        {
-           $nr_meetings [$srvname][$i] = 0;
-        }
-        else
-        {
-            if (!array_key_exists($i, $nr_meetings[$srvname]))
-            {
-                $nr_meetings [$srvname][$i] = 0;
-            }
+    foreach ($ydata as $key => $stat) {
+        foreach ($server_arr as $key1 => $srvname) {
+            if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
         }
     }
 }
 
+// Sort
+foreach ($ydata as $key => $stat) {
+    foreach ($server_arr as $key1 => $srvname) {
+        ksort($ydata[$key][$srvname]);
+    }
+}
 
-foreach ($server_arr as $srvname) {
 
-
-    ksort($nr_meetings[$srvname]);
-
+foreach ($ydata as $key => $stat) {
 
     // Setup the graph
     $graph = new Graph($width, 300);
@@ -90,7 +95,7 @@ foreach ($server_arr as $srvname) {
 
     $graph->SetTheme($theme_class);
     $graph->img->SetAntiAliasing(false);
-    $graph->title->Set('Usage: '.$srvname);
+    $graph->title->Set($title [$key]);
     $graph->SetBox(false);
 
     $graph->SetMargin(40, 20, 36, 63);
@@ -109,34 +114,21 @@ foreach ($server_arr as $srvname) {
     $graph->xaxis->SetLabelAngle(90);
 
     // Create the first line
-    $p1 = new LinePlot($nr_meetings[$srvname], $xdata);
-    $graph->Add($p1);
-    $p1->SetColor("#6495ED");
-    $p1->SetLegend("Number of active Rooms");
 
-    /*
-    // Create the second line
-    $p2 = new LinePlot($datay2);
-    $graph->Add($p2);
-    $p2->SetColor("#B22222");
-    $p2->SetLegend('Line 2');
-
-    // Create the third line
-    $p3 = new LinePlot($datay3);
-    $graph->Add($p3);
-    $p3->SetColor("#FF1493");
-    $p3->SetLegend('Line 3');
-    */
+    foreach ($server_arr as $key1 => $srvname)
+    {
+        $p1 = new LinePlot($stat[$srvname], $xdata);
+        $graph->Add($p1);
+        $p1->SetColor($color [$key1]);
+        $p1->SetLegend($srvname);
+    }
 
     $graph->legend->SetFrameWeight(1);
 
     // Output line
-    $imgname = "tmp/imagefile_$srvname.png";
+    $imgname = "tmp/imagefile_$key.png";
 
     $graph->Stroke($imgname);
-
-    //$graph->img->Stream($fileName);
-
 
 }
 
@@ -146,15 +138,16 @@ print "<html><body>";
 
 print "<h2>Usage statistics for $servername</h2>";
 
-foreach ($server_arr as $srvname) {
 
-    $imgname = "tmp/imagefile_$srvname.png";
+foreach ($ydata as $key => $stat) {
 
-    print '<img src="'.$imgname.'" />';
+    $imgname = "tmp/imagefile_$key.png";
+
+    print '<img src="' . $imgname . '" />';
 
     print "<br><br><br>";
-
 }
+
 
 
 print "</body></html>";
