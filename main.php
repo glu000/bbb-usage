@@ -19,9 +19,7 @@ $width = $_GET ['width'];
 
 $xdata = array ();
 
-if (!file_exists('tmp')) {  // TODO: This does not work
-    mkdir('tmp', 0777, true);
-}
+date_default_timezone_set($timezone);
 
 $file = fopen ($filename, 'r');
 
