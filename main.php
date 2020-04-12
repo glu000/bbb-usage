@@ -121,6 +121,8 @@ foreach ($ydata as $key => $stat) {
         $graph->Add($p1);
         $p1->SetColor($color [$key1]);
         $p1->SetLegend($srvname);
+
+        unset ($p1);
     }
 
     $graph->legend->SetFrameWeight(1);
@@ -129,6 +131,8 @@ foreach ($ydata as $key => $stat) {
     $imgname = "tmp/imagefile_$key.png";
 
     $graph->Stroke($imgname);
+
+    unset ($graph);
 
 }
 
