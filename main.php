@@ -103,18 +103,16 @@ foreach ($ydata as $key => $stat) {
 
     $graph->yaxis->HideZeroLabel();
     $graph->yaxis->HideLine(false);
-    $graph->yaxis->HideTicks(false, false);
+    $graph->yaxis->HideTicks(true, false);
 
     $graph->xgrid->Show();
     $graph->xgrid->SetLineStyle("solid");
     //$graph->xaxis->SetTickLabels($xdata);
+    $graph->yaxis->SetTextTickInterval(1,0);
+    $graph->xaxis->scale->SetDateFormat('Ymd h:i');
     $graph->xgrid->SetColor('#E3E3E3');
 
-;
-
     $graph->xaxis->SetLabelAngle(90);
-
-    // Create the first line
 
     foreach ($server_arr as $key1 => $srvname)
     {
