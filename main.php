@@ -150,35 +150,44 @@ print "<h2>Usage statistics for $servername</h2>";
 
 $currdata = getCurrentData();
 
-
-print '<br><table id="currdata">';
-
-print "<tr>";
-print "<th></th>";
-
-foreach ($title as $text)
+if (empty ($currdata))
 {
-    print "<th>$text</th>";
-}
-print "</tr>";
-
-foreach ($currdata as $key => $stat) {
+    print '<br><table id="currdata">';
 
     print "<tr>";
-    print "<td>";
-    print $key;
-    print "</td>";
+    print "<th>Current data</th>";
 
-    foreach ($stat as $value)
+    foreach ($title as $text)
     {
-        print "<td>";
-        print $value;
-        print "</td>";
+        print "<th>$text</th>";
     }
     print "</tr>";
+
+    foreach ($currdata as $key => $stat) {
+
+        print "<tr>";
+        print "<td>";
+        print $key;
+        print "</td>";
+
+        foreach ($stat as $value)
+        {
+            print "<td>";
+            print $value;
+            print "</td>";
+        }
+        print "</tr>";
+    }
+
+    print "</table><br><br>";
+}
+else
+{
+    print "<p>Currently no active meetings</p><br><br>";
 }
 
-print "</table><br><br>";
+
+
 
 
 foreach ($ydata as $key => $stat) {

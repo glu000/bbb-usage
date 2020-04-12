@@ -32,3 +32,12 @@ h2 {
     color: white;
 }
 
+p {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #CB4335;
+    color: white;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
