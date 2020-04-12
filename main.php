@@ -6,7 +6,7 @@ require_once ('jpgraph/jpgraph.php');
 require_once ('jpgraph/jpgraph_line.php');
 require_once ('jpgraph/jpgraph_date.php');
 
-$color = array ("#6495ED", "#B22222", "#FF1493");
+$color = array ("#CB4335", "#2471A3", "#138D75", "#D4AC0D", "#2E4053");
 
 $title = array ('meetingCount' => "Number of active Rooms",
     'participantCount' => "Number of participants",
