@@ -83,8 +83,8 @@ $script = "<script>\n";
 
 foreach ($ydata as $key => $stat) {
 
-    //$script .= "google.charts.load('current', {packages: ['corechart', 'line']}); \n";
-    $script .= "google.charts.load('current', {'packages':['bar']}); \n";
+    $script .= "google.charts.load('current', {packages: ['corechart', 'line']}); \n";
+    //$script .= "google.charts.load('current', {'packages':['bar']}); \n";
     $script .= "google.charts.setOnLoadCallback(drawChart".$key."); \n";
 
     $script .= "function drawChart".$key."() { var data = new google.visualization.DataTable(); \n";
@@ -109,12 +109,12 @@ foreach ($ydata as $key => $stat) {
     $script .= "vAxis: { title: '".$title[$key]."' }, \n";
     $script .= "}; \n";
 
-    //$script .= "var chart = new google.visualization.LineChart(document.getElementById('chart_".$key."')); \n";
-    //$script .= "chart.draw(data, options); \n";
+    $script .= "var chart = new google.visualization.LineChart(document.getElementById('chart_".$key."')); \n";
+    $script .= "chart.draw(data, options); \n";
 
-    $script .= "var chart = new google.charts.Bar(document.getElementById('chart_".$key."')); ";
+    //$script .= "var chart = new google.charts.Bar(document.getElementById('chart_".$key."')); ";
 
-    $script .= "chart.draw(data, google.charts.Bar.convertOptions(options)); ";
+    //$script .= "chart.draw(data, google.charts.Bar.convertOptions(options)); ";
 
 
     $script .= "} \n";
