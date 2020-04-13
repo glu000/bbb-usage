@@ -67,7 +67,7 @@ for ($i=0; $i<$row; $i++)
             if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
             $gdata [$key][$i][] = $ydata[$key][$srvname][$i];
             // Tooltip
-            $gdata [$key][$i][] = "'" . date ('y-m-d H:i', $xdata[$i]) . ": " . $ydata[$key][$srvname][$i] . "'";
+            $gdata [$key][$i][] = "'" . date ('y-m-d H:i', $xdata[$i]) . " - " . $srvname . ": " .$ydata[$key][$srvname][$i] . "'";
         }
 
     }
