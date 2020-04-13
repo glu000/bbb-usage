@@ -30,9 +30,9 @@ $graph->SetMargin(80,30,50,40);
 $graph->SetMarginColor('white');
 $graph->SetScale('dateint');
 $graph->title->Set('Current Bids');
-$graph->title->SetFont(FF_ARIAL,FS_BOLD,12);
+//$graph->title->SetFont(FF_ARIAL,FS_BOLD,12);
 $graph->subtitle->Set('(Updated every 5 minutes)');
-$graph->subtitle->SetFont(FF_ARIAL,FS_ITALIC,10);
+//$graph->subtitle->SetFont(FF_ARIAL,FS_ITALIC,10);
 
 // Enable antialias
 $graph->img->SetAntiAliasing();

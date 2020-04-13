@@ -88,11 +88,12 @@ foreach ($ydata as $key => $stat) {
 
     // Setup the graph
     $graph = new Graph($width, 300);
-    $graph->SetScale( 'datlin' );
+    $graph->SetScale( 'datlin');
 
     $theme_class = new UniversalTheme;
 
     $graph->SetTheme($theme_class);
+    //$graph->clearTheme();
     $graph->img->SetAntiAliasing(false);
     $graph->title->Set($title [$key]);
     $graph->SetBox(false);
@@ -104,15 +105,16 @@ foreach ($ydata as $key => $stat) {
     $graph->yaxis->HideZeroLabel();
     $graph->yaxis->HideLine(false);
     $graph->yaxis->HideTicks(true, false);
+    $graph->yaxis->scale->ticks->Set(1);
 
-    $graph->xgrid->Show();
     $graph->xgrid->SetLineStyle("solid");
     //$graph->xaxis->SetTickLabels($xdata);
-    $graph->yaxis->SetTextTickInterval(1,0);
-    $graph->xaxis->scale->SetDateFormat('Ymd h:i');
-    $graph->xgrid->SetColor('#E3E3E3');
 
+    $graph->xaxis->scale->SetDateFormat('Ymd H:i');
+    $graph->xgrid->SetColor('#E3E3E3');
     $graph->xaxis->SetLabelAngle(90);
+
+    $graph->xgrid->Show();
 
     foreach ($server_arr as $key1 => $srvname)
     {
@@ -125,7 +127,7 @@ foreach ($ydata as $key => $stat) {
     }
 
     $graph->legend->SetFrameWeight(1);
-    //$graph->legend->SetPos(0.5,0.5,'left','left');
+    //$graph->legend->SetPos(0.1,0.95,'left','left');
 
     // Output line
     $imgname = "tmp/imagefile_$key.png";
