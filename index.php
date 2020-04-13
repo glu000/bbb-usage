@@ -67,7 +67,7 @@ for ($i=0; $i<$row; $i++)
             if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
             $gdata [$key][$i][] = $ydata[$key][$srvname][$i];
             // Tooltip
-            $gdata [$key][$i][] = "'" . date ('Y-m-d H:i', $xdata[$i]) . ": " . $ydata[$key][$srvname][$i] . "'";
+            $gdata [$key][$i][] = "'" . date ('y-m-d H:i', $xdata[$i]) . ": " . $ydata[$key][$srvname][$i] . "'";
         }
 
     }
@@ -103,7 +103,7 @@ foreach ($ydata as $key => $stat) {
 
     //'#CB4335', '#2471A3', '#138D75', '#D4AC0D', '#2E4053'        colors: ['#10a513', '#097138'],
 
-    $script .= "var options = { height:400, colors: ['#CB4335', '#2471A3', '#138D75', '#D4AC0D', '#2E4053'], \n";
+    $script .= "var options = { height:400, colors: ['#CB4335', '#2471A3', '#D4AC0D', '#138D75', '#2E4053'], \n";
     $script .= "hAxis: { title: 'Date', format: 'yy-MM-dd HH:mm' }, \n";
     $script .= "vAxis: { title: '".$title[$key]."' }, \n";
     $script .= "}; \n";
@@ -166,15 +166,11 @@ else
 }
 
 
-
-
-
 foreach ($ydata as $key => $stat) {
 
     print '<div id="chart_'.$key.'"></div>';
 
 }
-
 
 
 print "</body></html>";
