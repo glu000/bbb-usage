@@ -66,7 +66,10 @@ for ($i=0; $i<$row; $i++)
         foreach ($server_arr as $key1 => $srvname) {
             if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
             $gdata [$key][$i][] = $ydata[$key][$srvname][$i];
+            // Tooltip
+            $gdata [$key][$i][] = "'" . date ('Y-m-d H:i', $xdata[$i]) . ": " . $ydata[$key][$srvname][$i] . "'";
         }
+
     }
 }
 
@@ -89,7 +92,9 @@ foreach ($ydata as $key => $stat) {
     foreach ($server_arr as $key1 => $srvname)
     {
         $script .= "data.addColumn('number', '".$srvname."'); \n";
+        $script .= "data.addColumn({type: 'string', role: 'tooltip'}); \n";
     }
+
 
     $js_gdata = json_encode($gdata[$key]);
     $js_gdata = str_replace('"', '', $js_gdata);
