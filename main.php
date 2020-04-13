@@ -110,7 +110,9 @@ foreach ($ydata as $key => $stat) {
     $graph->xgrid->SetLineStyle("solid");
     //$graph->xaxis->SetTickLabels($xdata);
 
-    $graph->xaxis->scale->SetDateFormat('Ymd H:i');
+    $graph->xaxis->scale->SetDateFormat('y-m-d H:i');
+
+    $x= date ('y-m-d H:i');
     $graph->xgrid->SetColor('#E3E3E3');
     $graph->xaxis->SetLabelAngle(90);
 
