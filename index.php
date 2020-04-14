@@ -78,6 +78,13 @@ print '<html><head>';
 print '<link rel="stylesheet" type="text/css" href="main.css">';
 print '<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>';
 
+
+print '<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />';
+print '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
+print '<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>';
+
+
+
 $script = "<script>\n";
 
 
@@ -172,6 +179,37 @@ else
 {
     print "<p>Currently no active meetings</p><br><br>";
 }
+
+if (empty ($_GET['selectserver']))
+{
+    $x=1;
+}
+else
+{
+    $y=2;
+}
+
+print '<form method="get" name="form" action="index.php">';
+
+print '<select id="selectserver" name="selectserver[]" multiple="multiple">';
+print '<option value="JAN">January</option>';
+print '<option value="FEB">February</option>';
+print '<option value="MAR">March</option>';
+print '</select>';
+
+print '<input type="submit" value="Submit">';
+
+print '</form>';
+
+
+
+
+
+
+print "<script>$('#selectserver').select2({ placeholder: 'Select a month' });</script>";
+
+
+
 
 
 foreach ($ydata as $key => $stat) {

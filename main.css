@@ -15,6 +15,7 @@ h2 {
     width: 100%;
 }
 
+
 #currdata td, #currdata th {
     border: 1px solid #ddd;
     padding: 8px;
@@ -38,6 +39,14 @@ p {
     text-align: center;
     background-color: #CB4335;
     color: white;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+#selectserver {
+    width: 500px;
+
+    text-align: left;
+    font-size: 1em;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
