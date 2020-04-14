@@ -106,7 +106,8 @@ foreach ($ydata as $key => $stat) {
 
     $script .= "var options = { height:400, colors: ['#CB4335', '#2471A3', '#D4AC0D', '#138D75', '#2E4053'], \n";
     $script .= "hAxis: { title: 'Date', format: 'yy-MM-dd HH:mm' }, \n";
-    $script .= "vAxis: { title: '".$title[$key]."' }, \n";
+    $script .= "title: '".$title[$key]."', \n";
+    //$script .= "vAxis: { title: '".$title[$key]."' }, \n";
     $script .= "}; \n";
 
     $script .= "var chart = new google.visualization.LineChart(document.getElementById('chart_".$key."')); \n";
