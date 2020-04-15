@@ -18,7 +18,14 @@ $file = fopen ($filename, 'r');
 $row = 0;
 $maxserver = 0;
 $server_arr = array ();
-if (!empty ($_GET))  $selserver = $_GET['selectserver'];
+$startdate = 0;
+if (!empty ($_GET))
+{
+    $selserver = $_GET['selectserver'];
+    if (array_key_exists('seldate', $_GET)) $startdate = strtotime ($_GET ['seldate']);
+}
+
+
 
 
 
@@ -78,14 +85,15 @@ if (!empty ($selserver))
 for ($i=0; $i<$row; $i++)
 {
     foreach ($ydata as $key => $stat) {
-        $gdata [$key][$i][0] = 'new Date('.($xdata[$i]*1000).')';
-        foreach ($server_arr as $key1 => $srvname) {
-            if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
-            $gdata [$key][$i][] = $ydata[$key][$srvname][$i];
-            // Tooltip
-            $gdata [$key][$i][] = "'" . date ('y-m-d H:i', $xdata[$i]) . " - " . $srvname . ": " .$ydata[$key][$srvname][$i] . "'";
+        if ($xdata[$i] >= $startdate) {
+            $gdata [$key][$i][0] = 'new Date(' . ($xdata[$i] * 1000) . ')';
+            foreach ($server_arr as $key1 => $srvname) {
+                if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
+                $gdata [$key][$i][] = $ydata[$key][$srvname][$i];
+                // Tooltip
+                $gdata [$key][$i][] = "'" . date('y-m-d H:i', $xdata[$i]) . " - " . $srvname . ": " . $ydata[$key][$srvname][$i] . "'";
+            }
         }
-
     }
 }
 
@@ -95,9 +103,12 @@ print '<link rel="stylesheet" type="text/css" href="main.css">';
 print '<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>';
 
 
-print '<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />';
-print '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>';
-print '<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>';
+print '<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js" rel="stylesheet" />';
+print '<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />';
+print '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>';
+print '<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"</script>';
+print '<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.full.min.js"></script>';
+
 
 
 
@@ -193,8 +204,9 @@ if (!empty ($currdata))
 }
 else
 {
-    print "<p>Currently no active meetings</p><br><br>";
+    print '<p id="nomeetings">Currently no active meetings</p><br><br>';
 }
+
 
 
 print '<form method="get" name="form" action="index.php">';
@@ -223,13 +235,25 @@ foreach ($allservers as $key => $server)
 
 print '</select>';
 
-print '<input type="submit" value="Submit">';
+//print '<div class="submit">';
 
+print '<input id="but" type="submit" value="Submit">';
+
+//print '</div>';
 print '</div>';
+
+
+print '<div class="seldate">';
+print '<p>Start Date: <input type="text" id="datepicker" name="seldate"></p>';
+print '</div>';
+
+
 
 print '</form>';
 
-print "<script>$('#selectserver').select2({ placeholder: 'Select servers' });</script>";
+print "<script>$('#selectserver').select2({ placeholder: 'Select servers', width: 'element' });</script>";
+
+print "<script>$('input#datepicker').datepicker({dateFormat: 'yy-mm-dd'})</script>";
 
 
 

@@ -33,7 +33,7 @@ h2 {
     color: white;
 }
 
-p {
+#nomeetings {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
@@ -42,8 +42,12 @@ p {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
+.seldate {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
 #selectserver {
-    width: 500px;
+    width: 700px;
     text-align: left;
     font-size: 1em;
     margin-left: 12px;
@@ -56,5 +60,26 @@ p {
 
 .sel {
     margin-left: 12px;
+}
+
+#but {
+    margin-left: 6px;
+    font-size: 1.5em;
+}
+
+#datepicker {
+    font-size: 1em;
+}
+
+#butx {
+    padding:5px 15px;
+    background:#ccc;
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin-left: 6px;
+    margin-top: 8px;
 }
 
