@@ -20,8 +20,10 @@ $maxserver = 0;
 $server_arr = array ();
 $startdate = 0;
 $selserver = array ();
-$startdate = $enddate = 0;
-$startdate_str = $enddate_str = "";
+$startdate = 0;
+$enddate = time ();
+$startdate_str = "";
+$enddate_str = date ("Y-m-d", time ());
 if (!empty ($_GET))
 {
     if (array_key_exists('selectserver', $_GET)) $selserver = $_GET['selectserver'];
