@@ -165,7 +165,7 @@ if (!empty($gdata))
         //'#CB4335', '#2471A3', '#138D75', '#D4AC0D', '#2E4053'        colors: ['#10a513', '#097138'],
 
         $script .= "var options = { height:400, colors: ['#CB4335', '#2471A3', '#D4AC0D', '#138D75', '#2E4053'], isStacked: 'true', \n";
-        $script .= "hAxis: { title: 'Date', format: 'yy-MM-dd HH:mm' }, \n";
+        $script .= "hAxis: { format: 'yy-MM-dd HH:mm' }, \n";
         $script .= "title: '".$title[$key]."', \n";
         //$script .= "vAxis: { title: '".$title[$key]."' }, \n";
         $script .= "}; \n";
