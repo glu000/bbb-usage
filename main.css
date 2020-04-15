@@ -54,24 +54,17 @@ h2 {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
-.select2-selection__choice {
+.select2-selection__choice, .select2-results__option, .select2-results__option--highlighted {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
-.sel {
-    margin-left: 12px;
-}
 
-#but {
-    margin-left: 6px;
-    font-size: 1.5em;
-}
 
-#datepicker {
+#datepicker, #datepicker1 {
     font-size: 1em;
 }
 
-#butx {
+#but {
     padding:5px 15px;
     background:#ccc;
     border:0 none;
@@ -79,7 +72,12 @@ h2 {
     -webkit-border-radius: 5px;
     border-radius: 5px;
     font-size: 1.2em;
-    margin-left: 6px;
-    margin-top: 8px;
+    font-size: 1em;
+    margin-left: 20px;
+}
+
+.sel{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    padding-left: 20px;
 }
 
