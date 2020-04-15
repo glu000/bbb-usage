@@ -18,6 +18,8 @@ $file = fopen ($filename, 'r');
 $row = 0;
 $maxserver = 0;
 $server_arr = array ();
+if (!empty ($_GET))  $selserver = $_GET['selectserver'];
+
 
 
 if (($handle = fopen($filename, "r")) !== FALSE) {
@@ -56,6 +58,20 @@ else
 {
     exit; // TODO: Print error message
 }
+
+$allservers = $server_arr;
+if (!empty ($selserver))
+{
+    foreach ($server_arr as $key => $server)
+    {
+        if (array_search($server, $selserver) === false)
+        {
+            unset ($server_arr [$key]);
+        }
+    }
+}
+
+
 
 
 // fill empty values & convert to Google format
@@ -180,33 +196,40 @@ else
     print "<p>Currently no active meetings</p><br><br>";
 }
 
-if (empty ($_GET['selectserver']))
-{
-    $x=1;
-}
-else
-{
-    $y=2;
-}
 
 print '<form method="get" name="form" action="index.php">';
 
+print '<div class="sel">';
+
 print '<select id="selectserver" name="selectserver[]" multiple="multiple">';
-print '<option value="JAN">January</option>';
-print '<option value="FEB">February</option>';
-print '<option value="MAR">March</option>';
+
+foreach ($allservers as $key => $server)
+{
+    if (!empty ($selserver))
+    {
+        print '<option value="'.$server.'"';
+        if (array_search($server, $selserver) !== false)
+        {
+            print " selected";
+        }
+        print '>'.$server.'</option>';
+    }
+    else
+    {
+        print '<option value="'.$server.'" selected>'.$server.'</option>';
+    }
+}
+
+
 print '</select>';
 
 print '<input type="submit" value="Submit">';
 
+print '</div>';
+
 print '</form>';
 
-
-
-
-
-
-print "<script>$('#selectserver').select2({ placeholder: 'Select a month' });</script>";
+print "<script>$('#selectserver').select2({ placeholder: 'Select servers' });</script>";
 
 
 

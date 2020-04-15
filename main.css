@@ -44,9 +44,17 @@ p {
 
 #selectserver {
     width: 500px;
-
     text-align: left;
     font-size: 1em;
+    margin-left: 12px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+.select2-selection__choice {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+.sel {
+    margin-left: 12px;
 }
 
