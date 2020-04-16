@@ -2,7 +2,7 @@
 
 use BigBlueButton\BigBlueButton;
 
-function getCurrentData ($show_server = "")
+function getCurrentData ($show_server = "*")
 {
     require_once './vendor/autoload.php';
     require_once 'conf.php';
