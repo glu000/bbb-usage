@@ -7,11 +7,15 @@ h2 {
     font-family:verdana
 }
 
+#divcurrdata {
+    margin-left: 12px;
+    margin-right: 12px;
+}
+
+
 #currdata {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    margin-left: 12px;
-    margin-right: 12px;
     width: 100%;
 }
 
@@ -54,6 +58,21 @@ h2 {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 
+#secret {
+    width: 200px;
+    font-size: 1em;
+    margin-left: 12px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+
+}
+
 .select2-selection__choice, .select2-results__option, .select2-results__option--highlighted {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
@@ -79,5 +98,9 @@ h2 {
 .sel{
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     padding-left: 20px;
+}
+
+#hidden {
+    visibility: hidden;
 }
 
