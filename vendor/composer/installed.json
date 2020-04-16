@@ -1,0 +1,60 @@
+[
+    {
+        "name": "bigbluebutton/bigbluebutton-api-php",
+        "version": "2.0.8",
+        "version_normalized": "2.0.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bigbluebutton/bigbluebutton-api-php.git",
+            "reference": "fe55f959406dd9dab511e1505c1a6ce568a30f7d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bigbluebutton/bigbluebutton-api-php/zipball/fe55f959406dd9dab511e1505c1a6ce568a30f7d",
+            "reference": "fe55f959406dd9dab511e1505c1a6ce568a30f7d",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "ext-mbstring": "*",
+            "ext-simplexml": "*",
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "composer/composer": "1.7.*@dev",
+            "ext-mbstring": "*",
+            "friendsofphp/php-cs-fixer": "2.*",
+            "fzaninotto/faker": "~1.8.0",
+            "php": ">=7.0",
+            "php-coveralls/php-coveralls": "2.1.*",
+            "phpunit/phpunit": "6.*",
+            "squizlabs/php_codesniffer": "3.*"
+        },
+        "time": "2020-04-02T15:39:35+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "BigBlueButton\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Ghazi Triki",
+                "email": "ghazi.nocturne@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "BigBlueButton PHP API Library for PHP",
+        "homepage": "http://bigbluebutton.org/",
+        "keywords": [
+            "api",
+            "bbb",
+            "bigbluebutton"
+        ]
+    }
+]

@@ -1,0 +1,46 @@
+{
+  "name": "bigbluebutton/bigbluebutton-api-php",
+  "type": "library",
+  "description": "BigBlueButton PHP API Library for PHP",
+  "keywords": [
+    "bigbluebutton",
+    "bbb",
+    "api"
+  ],
+  "homepage": "http://bigbluebutton.org/",
+  "license": "GPL-3.0",
+  "authors": [
+    {
+      "name": "Ghazi Triki",
+      "email": "ghazi.nocturne@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "repositories": {
+    "packagist": {
+      "url": "https://packagist.org",
+      "type": "composer"
+    }
+  },
+  "require": {
+    "php": ">=5.4",
+    "ext-curl": "*",
+    "ext-simplexml": "*",
+    "ext-mbstring": "*"
+  },
+  "require-dev": {
+    "php": ">=7.0",
+    "ext-mbstring": "*",
+    "composer/composer": "1.7.*@dev",
+    "phpunit/phpunit": "6.*",
+    "fzaninotto/faker": "~1.8.0",
+    "friendsofphp/php-cs-fixer": "2.*",
+    "squizlabs/php_codesniffer": "3.*",
+    "php-coveralls/php-coveralls": "2.1.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "BigBlueButton\\": "src"
+    }
+  }
+}

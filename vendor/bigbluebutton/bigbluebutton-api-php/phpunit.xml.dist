@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="./tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+
+    <php>
+        <!-- Specify the value of your BigBlueButton secret -->
+        <env name="BBB_SECRET" value="8cd8ef52e8e101574e400365b55e11a6"/>
+        <!-- Specify the Server Base URL of your BigBlueButton -->
+        <env name="BBB_SERVER_BASE_URL" value="https://test-install.blindsidenetworks.com/bigbluebutton/"/>
+    </php>
+
+    <log type="coverage-html" target="./coverage"
+         charset='UTF-8' yui='true'/>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
+
+    <testsuites>
+        <testsuite name="BigBlueButton test suit">
+            <directory>./tests/</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
