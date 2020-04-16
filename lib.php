@@ -2,7 +2,7 @@
 
 use BigBlueButton\BigBlueButton;
 
-function getCurrentData ()
+function getCurrentData ($show_server = "")
 {
     require_once './vendor/autoload.php';
     require_once 'conf.php';
@@ -26,25 +26,27 @@ function getCurrentData ()
 
             $server = (string)$meeting->metadata->{'bbb-origin-server-name'};
 
-            if (!array_key_exists($server, $data))
+            if (($show_server == "*") or ($show_server == $server))
             {
-                // new server - init stats (to avoid php warning undefined index)
-                $data [$server]['meetingCount'] = 0;
-                $data [$server]['participantCount'] = 0;
-                $data [$server]['voiceParticipantCount'] = 0;
-                $data [$server]['videoCount'] = 0;
-                $data [$server]['breakoutCount'] = 0;
-            }
+                if (!array_key_exists($server, $data))
+                {
+                    // new server - init stats (to avoid php warning undefined index)
+                    $data [$server]['meetingCount'] = 0;
+                    $data [$server]['participantCount'] = 0;
+                    $data [$server]['voiceParticipantCount'] = 0;
+                    $data [$server]['videoCount'] = 0;
+                    $data [$server]['breakoutCount'] = 0;
+                }
 
-            $data [$server]['meetingCount'] += 1;
-            $data [$server]['participantCount'] += $meeting->participantCount;
-            $data [$server]['voiceParticipantCount'] += $meeting->voiceParticipantCount + $meeting->listenerCount;
-            $data [$server]['videoCount'] += $meeting->videoCount;
-            if ((string)$meeting->isBreakout == "true")
-            {
-                $data [$server]['breakoutCount'] += 1;
+                $data [$server]['meetingCount'] += 1;
+                $data [$server]['participantCount'] += $meeting->participantCount;
+                $data [$server]['voiceParticipantCount'] += $meeting->voiceParticipantCount + $meeting->listenerCount;
+                $data [$server]['videoCount'] += $meeting->videoCount;
+                if ((string)$meeting->isBreakout == "true")
+                {
+                    $data [$server]['breakoutCount'] += 1;
+                }
             }
-            $x=1;
         }
         return $data;
     }

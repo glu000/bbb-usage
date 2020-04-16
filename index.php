@@ -44,12 +44,26 @@ if (!empty ($_GET))
 
 
 if ($secret_input != "") {
-}
+
+    $srv_allowed = array_key_exists($secret_input, $secrets);
+
+    if ($srv_allowed) {
+        $show_server = $secrets[$secret_input];
+
+        if ($show_server == "*") {
+            $showall = true;
+        } else {
+            $showall = false;
+
+            $selserver = array($show_server);
+        }
+
+    } else {
+        print "nope";
+        exit;
+    }
 
 
-
-if (!1)
-{
     if (($handle = fopen($filename, "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 255, $delimiter)) !== FALSE) {
 
@@ -194,10 +208,10 @@ if (!1)
     print "<body>";
 
 
-    print "<h2>Usage statistics for $servername</h2>";
+    print "<h2>Usage statistics for " . ($showall ? $servername : $show_server) . "</h2>";
 
 
-    $currdata = getCurrentData();
+    $currdata = getCurrentData($show_server);
 
     print '<div id="divcurrdata">';
 
@@ -235,7 +249,7 @@ if (!1)
 
     print '<form method="get" name="form" action="index.php">';
 
-    print '<input type="hidden" name="secret" value="'.$secret_input.'">';
+    print '<input type="hidden" name="secret" value="' . $secret_input . '">';
 
     //print '<div class="sel">';
 
@@ -243,26 +257,29 @@ if (!1)
 
     print '<tr>';
 
-    print "<td>";
+    if ($showall)
+    {
+        print "<td>";
 
-    print '<select id="selectserver" name="selectserver[]" multiple="multiple">';
+        print '<select id="selectserver" name="selectserver[]" multiple="multiple">';
 
-    foreach ($allservers as $key => $server) {
-        if (!empty ($selserver)) {
-            print '<option value="' . $server . '"';
-            if (array_search($server, $selserver) !== false) {
-                print " selected";
+        foreach ($allservers as $key => $server) {
+            if (!empty ($selserver)) {
+                print '<option value="' . $server . '"';
+                if (array_search($server, $selserver) !== false) {
+                    print " selected";
+                }
+                print '>' . $server . '</option>';
+            } else {
+                print '<option value="' . $server . '" selected>' . $server . '</option>';
             }
-            print '>' . $server . '</option>';
-        } else {
-            print '<option value="' . $server . '" selected>' . $server . '</option>';
         }
+
+
+        print '</select>';
+
+        print "</td>";
     }
-
-
-    print '</select>';
-
-    print "</td>";
 
     print '<td  class="sel">';
     print '<p>Start Date: <input type="text" id="datepicker" name="startdate" value="' . $startdate_str . '"></p>';
