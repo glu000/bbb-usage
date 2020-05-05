@@ -20,9 +20,9 @@ $maxserver = 0;
 $server_arr = array ();
 $startdate = 0;
 $selserver = array ();
-$startdate = 0;
+$startdate = time ();   // Default: Show current day
 $enddate = time ();
-$startdate_str = "";
+$startdate_str = date ("Y-m-d", time ());
 $enddate_str = date ("Y-m-d", time ());
 $secret_input = "";
 
