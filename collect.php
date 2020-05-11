@@ -65,8 +65,8 @@ if ($db_name != "")
 
     $conn->close();
 }
-else
-{
+//else
+//{
     // put data into csv-file
 
     $output  = $day . $delimiter;
@@ -91,5 +91,5 @@ else
     print $output;
 
     file_put_contents($filename, $output, FILE_APPEND);
-}
+//}
 
