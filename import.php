@@ -8,6 +8,7 @@ require_once 'lib.php';
 date_default_timezone_set($timezone);
 
 $row = 0;
+$imported = 0;
 
 $conn = new mysqli($db_server, $db_user, $db_password, $db_name);
 
@@ -27,7 +28,7 @@ if ($handle && $db_name)
 
         $ressql = $conn->query($sql);
 
-        echo "Table initialized";
+        echo "Table initialized\n";
     }
 
     while (($data = fgetcsv($handle, 255, $delimiter)) !== FALSE) {
@@ -54,6 +55,8 @@ if ($handle && $db_name)
 
             $ressql = $conn->query($sql);
 
+            $imported++;
+
             $serveridx += 6;
         }
 
@@ -61,7 +64,7 @@ if ($handle && $db_name)
         $row++;
     }
 
-    echo "$row rows imported";
+    echo "$imported rows imported\n";
 
     fclose($handle);
 
