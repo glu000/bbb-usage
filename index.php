@@ -3,7 +3,7 @@
 require_once 'conf.php';
 require_once 'lib.php';
 
-$title = array ('meeting_count' => "Number of active rooms",
+$title = array ('meeting_count' => "Number of active rooms (incl. breakout-rooms)",
     'participant_count' => "Number of participants",
     'voice_participant_count' => "Number of voice connections",
     'video_count' => "Number of video connections",

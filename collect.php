@@ -70,7 +70,6 @@ if ($db_name != "")
             $vpc = $stats['voice_participant_count'];
             $vc = $stats['video_count'];
             $bc = $stats['breakout_count'];
-            $mc -= $bc;
 
             $sql = "INSERT INTO bbb_usage_data (ts, server_count, server, meeting_count, participant_count, voice_participant_count, video_count, breakout_count)
                 VALUES ('$timestamp', $server_count, '$server', $mc, $pc, $vpc, $vc, $bc)";
