@@ -60,8 +60,8 @@ if ($handle && $db_name)
 
         if ($nr_server == 0)
         {
-            $sql = "INSERT INTO bbb_usage_data (probe, ts, server_count)
-                VALUES ($row, '$ts', 0)";
+            $sql = "INSERT INTO bbb_usage_data (ts, server_count)
+                VALUES ('$ts', 0)";
 
             $ressql = $conn->query($sql);
         }
