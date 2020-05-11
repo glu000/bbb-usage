@@ -3,19 +3,16 @@
 require_once 'conf.php';
 require_once 'lib.php';
 
-$title = array ('meetingCount' => "Number of active rooms",
-    'participantCount' => "Number of participants",
-    'voiceParticipantCount' => "Number of voice connections",
-    'videoCount' => "Number of video connections",
-    'breakoutCount' => "Number of breakout-rooms");
-
-$xdata = array ();
+$title = array ('meeting_count' => "Number of active rooms",
+    'participant_count' => "Number of participants",
+    'voice_participant_count' => "Number of voice connections",
+    'video_count' => "Number of video connections",
+    'breakout_count' => "Number of breakout-rooms");
 
 date_default_timezone_set($timezone);
 
 $file = fopen ($filename, 'r');
 
-$row = 0;
 $maxserver = 0;
 $server_arr = array ();
 $startdate = 0;
@@ -25,6 +22,7 @@ $enddate = time ();
 $startdate_str = date ("Y-m-d", time ());
 $enddate_str = date ("Y-m-d", time ());
 $secret_input = "";
+$gdata = array();
 
 if (!empty ($_GET))
 {
@@ -50,7 +48,7 @@ if ($secret_input != "") {
     if ($srv_allowed) {
         $show_server = $secrets[$secret_input];
 
-        if ($show_server == "*") {
+        if ($show_server == "%") {
             $showall = true;
         } else {
             $showall = false;
@@ -63,72 +61,87 @@ if ($secret_input != "") {
         exit;
     }
 
+    if ($db_name != "")
+    {
+        $conn = new mysqli($db_server, $db_user, $db_password, $db_name);
 
-    if (($handle = fopen($filename, "r")) !== FALSE) {
-        while (($data = fgetcsv($handle, 255, $delimiter)) !== FALSE) {
-
-            //$num = count($data);  // TODO: Check if data row is correct, i.e. $num and $nr_server fit
-
-            $xdata [$row] = strtotime($data[0] . " " . $data [1]);
-
-            $nr_server = $data [2];
-
-            if ($nr_server > $maxserver) $maxserver = $nr_server;
-
-            $serveridx = 3;
-
-            for ($i = 0; $i < $nr_server; $i++) {
-                $srvname = $data [$serveridx];
-                if (!in_array($srvname, $server_arr)) $server_arr [] = $srvname;
-
-                $ydata['meetingCount'][$srvname][$row] = (int)$data[4 + (6 * $i)];
-                $ydata['participantCount'][$srvname][$row] = (int)$data[5 + (6 * $i)];
-                $ydata['voiceParticipantCount'][$srvname][$row] = (int)$data[6 + (6 * $i)];
-                $ydata['videoCount'][$srvname][$row] = (int)$data[7 + (6 * $i)];
-                $ydata['breakoutCount'][$srvname][$row] = (int)$data[8 + (6 * $i)];
-
-                $serveridx += 6;
-            }
-            $row++;
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
         }
 
+        $startdate_sql = $startdate_str . " 00:00:00";
+        $enddate_sql = $enddate_str . " 23:59:59";
+        $where_str1 = " WHERE (server like '$show_server') AND (ts >= '$startdate_sql') AND (ts <= '$enddate_sql')";
+        $where_str2 = " WHERE ((server like '$show_server') or (server_count = 0)) AND (ts >= '$startdate_sql') AND (ts <= '$enddate_sql')";
 
-        fclose($handle);
-    } else {
-        exit; // TODO: Print error message
-    }
+        $sql = "SELECT DISTINCT server FROM bbb_usage_data $where_str1 ORDER BY server";
 
-    $allservers = $server_arr;
-    //$allservers[] = "Sum";
-    if (!empty ($selserver)) {
-        foreach ($server_arr as $key => $server) {
-            if (array_search($server, $selserver) === false) {
-                unset ($server_arr [$key]);
+        $ressql = $conn->query($sql);
+
+        if ($ressql->num_rows > 0) {
+
+            for ($i=0; $i<$ressql->num_rows; $i++)
+            {
+                $result = $ressql->fetch_assoc();
+                $server_arr [$i] = $result ['server'];
+                $server_arr_idx [$result ['server']] = $i;
             }
-        }
-    }
+            $maxserver = $ressql->num_rows;
 
-
-    $gdata = array();
-
-    // fill empty values & convert to Google format
-    for ($i = 0; $i < $row; $i++) {
-        if (($xdata[$i] >= $startdate) && ($xdata[$i] <= $enddate)) {
-            foreach ($ydata as $key => $stat) {
-                $gdata [$key][$i][0] = 'new Date(' . ($xdata[$i] * 1000) . ')';
-                $sum = 0;
-                foreach ($server_arr as $key1 => $srvname) {
-                    if (!isset ($stat[$srvname][$i])) $ydata[$key][$srvname][$i] = 0;
-                    $gdata [$key][$i][] = $ydata[$key][$srvname][$i];
-                    $sum += $ydata[$key][$srvname][$i];
-                    // Tooltip
-                    $gdata [$key][$i][] = "'" . date('y-m-d H:i', $xdata[$i]) . " - " . $srvname . ": " . $ydata[$key][$srvname][$i] . "'";
+            $allservers = $server_arr;
+            if (!empty ($selserver)) {
+                foreach ($server_arr as $key => $server) {
+                    if (array_search($server, $selserver) === false) {
+                        unset ($server_arr [$key]);
+                        $maxserver--;
+                    }
                 }
-                // Sum
-                //$gdata [$key][$i][] = $sum;
-                //$gdata [$key][$i][] = "'" . date('y-m-d H:i', $xdata[$i]) . " - Sum: " . $sum . "'";
+                $server_arr = array_values($server_arr);
+            }
 
+            $sql = "SELECT * FROM bbb_usage_data $where_str2";
 
+            $ressql = $conn->query($sql);
+
+            $last_probe = -1;
+
+            for ($i=0; $i<$ressql->num_rows; $i++)
+            {
+                $result = $ressql->fetch_assoc();
+
+                $probe = $result ['probe'];
+                $server_count = $result ['server_count'];
+                $timestamp = strtotime($result['ts']);
+
+                if ($probe != $last_probe)
+                {
+                    // new probe - init array, because google charts needs always the same number of data elements
+                    $last_probe = $probe;
+
+                    foreach ($title as $stat => $value) {
+                        $gdata [$stat][$probe][0] = 'new Date(' . ($timestamp * 1000) . ')';
+                        for ($server_idx = 0; $server_idx < $maxserver; $server_idx++)
+                        {
+                            $idx = ($server_idx) * 2 + 1;
+                            $gdata [$stat][$probe][$idx] = 0;
+                            $gdata [$stat][$probe][$idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $server_arr[$server_idx] . ": " . 0 . "'";
+                        }
+                    }
+                }
+
+                if ($server_count > 0)
+                {
+                    $server_idx = array_search($result['server'], $server_arr);
+
+                    if ($server_idx === FALSE) continue;
+                    $server_idx = ($server_idx * 2) + 1;
+
+                    foreach ($title as $stat => $value)
+                    {
+                        $gdata [$stat][$probe][$server_idx] = (int)$result[$stat];
+                        $gdata [$stat][$probe][$server_idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $result['server'] . ": " . $result[$stat] . "'";
+                    }
+                }
             }
         }
     }
@@ -315,7 +328,7 @@ if ($secret_input != "") {
     print "<script>$('input#datepicker1').datepicker({dateFormat: 'yy-mm-dd'})</script>";
 
 
-    foreach ($ydata as $key => $stat) {
+    foreach ($title as $key => $stat) {
 
         print '<div id="chart_' . $key . '"></div>';
 

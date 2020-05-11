@@ -11,7 +11,9 @@ $data = getCurrentData();
 
 $day = date('Y-m-d');
 $time = date('H:i');
+$timestamp = "$day $time:00";
 
+/*
 $exec_loads = sys_getloadavg();
 $exec_cores = trim(shell_exec("grep -P '^processor' /proc/cpuinfo|wc -l"));
 $cpu = round($exec_loads[1]/($exec_cores + 1)*100, 0);
@@ -19,6 +21,7 @@ $cpu = round($exec_loads[1]/($exec_cores + 1)*100, 0);
 $exec_free = explode("\n", trim(shell_exec('free')));
 $get_mem = preg_split("/[\s]+/", $exec_free[1]);
 $mem = round($get_mem[2]/$get_mem[1]*100, 0);
+*/
 
 if ($db_name != "")
 {
@@ -31,8 +34,9 @@ if ($db_name != "")
     }
 
     $sql = "CREATE TABLE IF NOT EXISTS bbb_usage_data (
-                    id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                    ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                    ts TIMESTAMP NOT NULL,
+                    server_count SMALLINT,
                     server VARCHAR(255),
                     meeting_count SMALLINT UNSIGNED,
                     participant_count SMALLINT UNSIGNED,
@@ -48,48 +52,34 @@ if ($db_name != "")
 
     $ressql = $conn->query($sql);
 
-    foreach ($data as $server => $stats)
-    {
-        $mc = $stats['meetingCount'];
-        $pc = $stats['participantCount'];
-        $vpc = $stats['voiceParticipantCount'];
-        $vc = $stats['videoCount'];
-        $bc = $stats['breakoutCount'];
+    $server_count = count ($data);
 
-        $sql = "INSERT INTO bbb_usage_data (server, meeting_count, participant_count, voice_participant_count, video_count, breakout_count, cpu, mem)
-                VALUES ('$server', $mc, $pc, $vpc, $vc, $bc, $cpu, $mem)";
+    if ($server_count == 0)
+    {
+        $sql = "INSERT INTO bbb_usage_data (ts, server_count)
+                VALUES ('$timestamp', 0)";
 
         $ressql = $conn->query($sql);
     }
+    else
+    {
+        foreach ($data as $server => $stats)
+        {
+            $mc = $stats['meeting_count'];
+            $pc = $stats['participant_count'];
+            $vpc = $stats['voice_participant_count'];
+            $vc = $stats['video_count'];
+            $bc = $stats['breakout_count'];
+            $mc -= $bc;
 
+            $sql = "INSERT INTO bbb_usage_data (ts, server_count, server, meeting_count, participant_count, voice_participant_count, video_count, breakout_count)
+                VALUES ('$timestamp', $server_count, '$server', $mc, $pc, $vpc, $vc, $bc)";
+
+            $ressql = $conn->query($sql);
+        }
+    }
 
     $conn->close();
 }
-//else
-//{
-    // put data into csv-file
 
-    $output  = $day . $delimiter;
-    $output .= $time . $delimiter;
-    $output .= count ($data);
-
-    foreach ($data as $server => $stats)
-    {
-        $output .= $delimiter;
-
-        $output .= $server . $delimiter;
-        $output .= $stats['meetingCount'] . $delimiter;
-        $output .= $stats['participantCount'] . $delimiter;
-        $output .= $stats['voiceParticipantCount'] . $delimiter;
-        $output .= $stats['videoCount'] . $delimiter;
-        $output .= $stats['breakoutCount'];
-
-    }
-
-    $output .= "\n";
-
-    print $output;
-
-    file_put_contents($filename, $output, FILE_APPEND);
-//}
 

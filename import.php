@@ -16,6 +16,25 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$sql = "CREATE TABLE IF NOT EXISTS bbb_usage_data (
+                    id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                    ts TIMESTAMP NOT NULL,
+                    server_count SMALLINT UNSIGNED,
+                    server VARCHAR(255),
+                    meeting_count SMALLINT UNSIGNED,
+                    participant_count SMALLINT UNSIGNED,
+                    voice_participant_count SMALLINT UNSIGNED,                                        
+                    video_count SMALLINT UNSIGNED,
+                    breakout_count SMALLINT UNSIGNED,
+                    cpu SMALLINT UNSIGNED,
+                    mem SMALLINT UNSIGNED,
+                    netout INT (11) UNSIGNED,
+                    netin INT (11) UNSIGNED,
+                    INDEX ts_index (ts)                                       
+                    )";
+
+$ressql = $conn->query($sql);
+
 
 $handle = fopen ($import_filename, "r");
 
@@ -33,13 +52,19 @@ if ($handle && $db_name)
 
     while (($data = fgetcsv($handle, 255, $delimiter)) !== FALSE) {
 
-        //$num = count($data);  // TODO: Check if data row is correct, i.e. $num and $nr_server fit
-
         $ts = $data[0] . " " . $data [1] . ":00";
 
         $nr_server = $data [2];
 
         $serveridx = 3;
+
+        if ($nr_server == 0)
+        {
+            $sql = "INSERT INTO bbb_usage_data (probe, ts, server_count)
+                VALUES ($row, '$ts', 0)";
+
+            $ressql = $conn->query($sql);
+        }
 
         for ($i = 0; $i < $nr_server; $i++) {
             $server = $data [$serveridx];
@@ -50,8 +75,8 @@ if ($handle && $db_name)
             $vc = (int)$data[7 + (6 * $i)];
             $bc = (int)$data[8 + (6 * $i)];
 
-            $sql = "INSERT INTO bbb_usage_data (ts, server, meeting_count, participant_count, voice_participant_count, video_count, breakout_count)
-                VALUES ('$ts', '$server', $mc, $pc, $vpc, $vc, $bc)";
+            $sql = "INSERT INTO bbb_usage_data (ts, server_count, server, meeting_count, participant_count, voice_participant_count, video_count, breakout_count)
+                VALUES ('$ts', $nr_server, '$server', $mc, $pc, $vpc, $vc, $bc)";
 
             $ressql = $conn->query($sql);
 
