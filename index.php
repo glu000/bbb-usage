@@ -103,28 +103,29 @@ if ($secret_input != "") {
 
             $ressql = $conn->query($sql);
 
-            $last_probe = -1;
+            $row = -1;
+            $last_ts = 0;
 
             for ($i=0; $i<$ressql->num_rows; $i++)
             {
                 $result = $ressql->fetch_assoc();
 
-                $probe = $result ['probe'];
                 $server_count = $result ['server_count'];
                 $timestamp = strtotime($result['ts']);
 
-                if ($probe != $last_probe)
+                if ($last_ts != $timestamp)
                 {
                     // new probe - init array, because google charts needs always the same number of data elements
-                    $last_probe = $probe;
+                    $last_ts = $timestamp;
+                    $row++;
 
                     foreach ($title as $stat => $value) {
-                        $gdata [$stat][$probe][0] = 'new Date(' . ($timestamp * 1000) . ')';
+                        $gdata [$stat][$row][0] = 'new Date(' . ($timestamp * 1000) . ')';
                         for ($server_idx = 0; $server_idx < $maxserver; $server_idx++)
                         {
                             $idx = ($server_idx) * 2 + 1;
-                            $gdata [$stat][$probe][$idx] = 0;
-                            $gdata [$stat][$probe][$idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $server_arr[$server_idx] . ": " . 0 . "'";
+                            $gdata [$stat][$row][$idx] = 0;
+                            $gdata [$stat][$row][$idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $server_arr[$server_idx] . ": " . 0 . "'";
                         }
                     }
                 }
@@ -138,8 +139,8 @@ if ($secret_input != "") {
 
                     foreach ($title as $stat => $value)
                     {
-                        $gdata [$stat][$probe][$server_idx] = (int)$result[$stat];
-                        $gdata [$stat][$probe][$server_idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $result['server'] . ": " . $result[$stat] . "'";
+                        $gdata [$stat][$row][$server_idx] = (int)$result[$stat];
+                        $gdata [$stat][$row][$server_idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $result['server'] . ": " . $result[$stat] . "'";
                     }
                 }
             }
