@@ -11,8 +11,6 @@ $title = array ('meeting_count' => "Number of active rooms (incl. breakout-rooms
 
 date_default_timezone_set($timezone);
 
-$file = fopen ($filename, 'r');
-
 $maxserver = 0;
 $server_arr = array ();
 $startdate = 0;
