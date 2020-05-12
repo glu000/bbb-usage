@@ -103,6 +103,7 @@ if ($secret_input != "") {
 
             $row = -1;
             $last_ts = 0;
+            $last_row_was_0 = true;
 
             for ($i=0; $i<$ressql->num_rows; $i++)
             {
@@ -114,8 +115,29 @@ if ($secret_input != "") {
                 if ($last_ts != $timestamp)
                 {
                     // new probe - init array, because google charts needs always the same number of data elements
-                    $last_ts = $timestamp;
+
+                    if (($last_row_was_0) && ($server_count == 0))
+                    {
+                        $last_ts = $timestamp;
+                        continue;
+                    }
+
                     $row++;
+
+                    if ($last_row_was_0)
+                    {
+                        foreach ($title as $stat => $value) {
+                            $gdata [$stat][$row][0] = 'new Date(' . ($last_ts * 1000) . ')';
+                            for ($server_idx = 0; $server_idx < $maxserver; $server_idx++)
+                            {
+                                $idx = ($server_idx) * 2 + 1;
+                                $gdata [$stat][$row][$idx] = 0;
+                                $gdata [$stat][$row][$idx+1] = "'" . date('y-m-d H:i', $last_ts) . " - " . $server_arr[$server_idx] . ": " . 0 . "'";
+                            }
+                        }
+
+                        $row++;
+                    }
 
                     foreach ($title as $stat => $value) {
                         $gdata [$stat][$row][0] = 'new Date(' . ($timestamp * 1000) . ')';
@@ -126,10 +148,14 @@ if ($secret_input != "") {
                             $gdata [$stat][$row][$idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $server_arr[$server_idx] . ": " . 0 . "'";
                         }
                     }
+
+                    $last_ts = $timestamp;
                 }
 
                 if ($server_count > 0)
                 {
+                    $last_row_was_0 = false;
+
                     $server_idx = array_search($result['server'], $server_arr);
 
                     if ($server_idx === FALSE) continue;
@@ -140,6 +166,10 @@ if ($secret_input != "") {
                         $gdata [$stat][$row][$server_idx] = (int)$result[$stat];
                         $gdata [$stat][$row][$server_idx+1] = "'" . date('y-m-d H:i', $timestamp) . " - " . $result['server'] . ": " . $result[$stat] . "'";
                     }
+                }
+                else
+                {
+                    $last_row_was_0 = true;
                 }
             }
         }
@@ -304,12 +334,6 @@ if ($secret_input != "") {
     print '<td>';
     print '<input id="but" type="submit" value="Submit">';
     print "</td>";
-    //print '<div class="submit">';
-
-
-    //print '</div>';
-    //print '</div>';
-
 
     print "</tr>";
 
