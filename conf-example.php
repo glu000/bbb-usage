@@ -10,7 +10,7 @@ $secrets = array ("<Secret_to_show_all_origin_servers>" => "%",
                   "<SecondSecret>" => "origin.server1.tld",
                   "<ThirdSecret>"  => "origin.server2.tld" );
 
-// If you just have one frontend (e.g. Greenlight) you can use following seeting
+// If you just have one frontend (e.g. Greenlight) you can use following setting
 $secrets = array ("MySecret" => "%");
 //
 // When opening the page enter "MySecret" and hit return
