@@ -11,6 +11,7 @@ $title = array ('meeting_count' => "Number of active rooms (incl. breakout-rooms
 
 date_default_timezone_set($timezone);
 
+$allservers = array ();
 $maxserver = 0;
 $server_arr = array ();
 $startdate = 0;
@@ -39,11 +40,14 @@ if (!empty ($_GET))
 }
 
 
-if ($secret_input != "") {
+if (($secret_input != "") or (!isset($secrets))) {
 
-    $srv_allowed = array_key_exists($secret_input, $secrets);
-
-    if ($srv_allowed) {
+    if (!isset($secrets))
+    {
+        $show_server = "%";
+        $showall = true;
+    }
+    elseif (array_key_exists($secret_input, $secrets)) {
         $show_server = $secrets[$secret_input];
 
         if ($show_server == "%") {
@@ -124,7 +128,7 @@ if ($secret_input != "") {
 
                     $row++;
 
-                    if ($last_row_was_0)
+                    if (($last_row_was_0) && ($last_ts != 0))
                     {
                         foreach ($title as $stat => $value) {
                             $gdata [$stat][$row][0] = 'new Date(' . ($last_ts * 1000) . ')';
@@ -358,6 +362,11 @@ if ($secret_input != "") {
     }
 
     if ($nodata) print '<br><p id="nomeetings">No data</p>';
+
+    print '<div id="version">';
+    print "<br>";
+    print "bbb-usage v" . BBB_USAGE_VERSION;
+    print "</div>";
 
 
     print "</body></html>";

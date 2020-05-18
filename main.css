@@ -104,3 +104,9 @@ h2 {
     visibility: hidden;
 }
 
+#version {
+    text-align: center;
+    color: #dddddd;
+    font-style: italic;
+}
+

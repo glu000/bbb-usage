@@ -2,6 +2,8 @@
 
 use BigBlueButton\BigBlueButton;
 
+define ("BBB_USAGE_VERSION", "1.1");
+
 function getCurrentData ($show_server = "%")
 {
     require_once './vendor/autoload.php';
